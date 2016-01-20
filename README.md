@@ -39,6 +39,7 @@ After all dependencies are installed, you can load following command to perform 
 ```bash
 cp .envrc.example .envrc           # create configuration file
 vi .envrc                          # edit configuration
+direnv apply                       # apply changes of configuration
 ./bin/auto-scaling-demo deploy     # to deploy necessary Autoscaler and Test apps
 ./bin/auto-scaling-demo load       # perform load test
 # visit Autoscaler App to see table with report on scaling events
