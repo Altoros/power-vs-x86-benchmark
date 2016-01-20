@@ -46,6 +46,8 @@ vi .envrc                          # edit configuration
 ./bin/draw-plots.R results/power.csv results/x86.csv  # creates the plot with result
 ```
 
-
+Results
+-------
+![resulting-plot](https://raw.githubusercontent.com/Altoros/power-vs-x86-benchmark/master/results/rplot.jpg)
 
 This demo is created for InterConnect 2016 presentation.
