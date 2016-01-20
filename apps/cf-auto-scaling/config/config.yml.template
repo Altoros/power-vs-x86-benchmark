@@ -1,0 +1,7 @@
+---
+api: 'https://api.<your pass>'
+username: '<username>'
+password: '<some pass>'
+organization: '<an organization>'
+space: '<a space>'
+application: '<an application name>'

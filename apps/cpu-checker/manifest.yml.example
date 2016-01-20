@@ -1,0 +1,5 @@
+---
+applications:
+- name: cpu-checker
+  memory: 512Mb
+  # buildpack: "https://github.com/Altoros/ruby-buildpack#power"

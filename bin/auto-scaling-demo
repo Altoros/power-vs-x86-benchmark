@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile", __FILE__)
+
+require "rubygems"
+require "bundler"
+Bundler.setup(:default, :test)
+require 'ruby-jmeter'
+require 'highline/import'
+require 'net/http'
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+
+require 'parser'
+require 'generator'
+require 'deployer'
+require 'handy_print'
+include HandyPrint
+
+test_app_name = "demo-cpu-checker"
+scaler_name = "demo-scaler"
+
+case ARGV.first
+when 'deploy'
+  deployer = Deployer.new(org: 'scaling-demo')
+  test_app  = deployer.deploy("cpu-checker",     name: test_app_name, target: test_app_name)
+  scaler   = deployer.deploy("cf-auto-scaling", name: scaler_name,  target: test_app_name)
+  print_app_table([test_app, scaler])
+
+when 'load', 'generate-load'
+  options = Parser.new.parse
+  app_route = app_route(test_app_name, options[:host])
+  url = "#{app_route}#{ENV["LOAD_PATH"] || "/fibonacci/500"}"
+  thread_count = (ENV['JMETER_THREADS'] || 1000).to_i
+  loops_count = (ENV['JMETER_LOOPS'] || 10).to_i
+  rumpup  = (ENV['JMETER_RUMPUP']  || 100).to_i
+  duration = (ENV['JMETER_DURATION'] || 60).to_i
+
+  scaler_url = ENV['CF_HOST'].gsub(/https?:\/\/api\./, scaler_name + '.')
+  http = Net::HTTP.new(scaler_url)
+  response = http.send_request('PUT', '/start-test')
+  puts "calling #{scaler_url}/start-test, response: #{response.code}"
+
+  test do
+    threads(count: thread_count, rumpup: rumpup, loops: loops_count, duration: duration) do
+      visit name: 'Dashing Demo', url: url
+    end
+  end.run
+
+when 'destroy'
+  deployer = Deployer.new(org: 'scaling-demo')
+  [scaler_name, test_app_name].each do |app|
+    say("#{green("Destroying")} #{app}...")
+    deployer.destroy(app).success? ? say(green("SUCCESS")) : say(red("FAILED"))  
+  end
+
+else
+  puts 'Usage:'
+  puts '     ./bin/auto-scaling-demo <deploy|load|destroy>'
+end

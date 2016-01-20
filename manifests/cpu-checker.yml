@@ -1,0 +1,8 @@
+---
+applications:
+  - name: <%= defined?(name) ? name : 'cpu-checker' %>
+    memory: 512M
+    instances: 1
+<% if ENV['TARGET_PLATFORM'] == 'power' %>
+    buildpack: "https://github.com/Altoros/ruby-buildpack#power"
+<% end %>

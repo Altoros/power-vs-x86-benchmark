@@ -1,0 +1,9 @@
+export CF_HOST=https://cf-domain.com
+export CF_USER=admin
+export CF_PASSWORD=admin
+export JMETER_RUMPUP=300
+export JMETER_DURATION=300
+export JMETER_THREADS=5000
+export JMETER_LOOPS=5000
+export LOAD_PATH=/fibonacci/15000
+export TARGET_PLATFORM=x86  # x86 or power

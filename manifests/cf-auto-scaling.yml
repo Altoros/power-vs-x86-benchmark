@@ -1,0 +1,17 @@
+---
+<% raise "#{host} should begin with https://" unless host.start_with?(host) %>
+applications:
+  - name: <%= defined?(name) ? name : 'cf-auto-scalling' %>
+    memory: 512M
+    instances: 1
+    command: bundle exec rackup -p $PORT
+<% if ENV['TARGET_PLATFORM'] == 'power' %>
+    buildpack: "https://github.com/Altoros/ruby-buildpack#power"
+<% end %>
+    env:
+      CF_API: <%= host %>
+      CF_USERNAME: <%= user %>
+      CF_PASSWORD: <%= password %>
+      CF_ORGANIZATION: <%= org %>
+      CF_SPACE: <%= space %>
+      CF_APPLICATION: <%= defined?(target) ? target : 'test-app' %> 

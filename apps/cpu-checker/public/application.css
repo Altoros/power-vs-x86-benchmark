@@ -1,0 +1,32 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro|Roboto|Arvo|Dosis|Monda|Exo);
+
+
+body.dark { background-color: #252f38; }
+body.light { background-color: #fff; }
+body {
+  text-align: center;
+  margin-top: 10em;
+}
+
+div {  }
+
+.text {
+  font-size: 3.3em;
+  text-transform: uppercase;
+  color: #46c699;
+}
+
+.highlighted {
+  font-size: 7.4em;
+  color: #f7d32a;
+  margin: 0.2em 0 0.2em 0;
+  /*text-transform: uppercase;*/
+}
+
+.future, .future-font {
+  font-family: "Exo", Dosis, Helvetica, Sans;
+}
+
+.monospace, .monospace-font {
+  font-family: 'Source Code Pro', Roboto, Monda, Dosis, Helvetica, Sans;
+}
